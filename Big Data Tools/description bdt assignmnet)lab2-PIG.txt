@@ -1,0 +1,614 @@
+Student Name = Bibek Shah Shankhar
+
+1. We copied genderClassification.csv from local system to 
+    Hdfs.
+    - hdfs dfs -put genderClassification.csv /TestData/
+    genderClassification.csv
+
+2. We listed genderClassification.csv to confirm 
+    whethere the file exists in hdfs or not.
+   - hdfs dfs -ls genderClassification.csv /TestData/
+    genderClassification.csv
+
+3. Then We print the 'genderClassification' flie to know the file
+    - hdfs dfs -cat genderClassification.csv /TestData/
+    genderClassification.csv
+
+
+
+Student Name = Bibek Shah Shankhar
+
+Question 1. Execute Load command with an Example.
+
+1. Starting pig grunt shell
+
+2. Loading the 'genderClassification.csv' into relation named
+    genderClassification .
+   - genderClassification = LOAD '/TestData/genderClassification.csv' 
+     USING PigStorage(',')
+     AS (fav_color:chararray, fav_music_genre:chararray, 
+         fav_beverage:chararray, fav_soft_drink:chararray, 
+         gender:chararray);
+
+
+
+
+
+
+
+Question 2. Execute Dump command with an Example.
+
+1. Executing DUMP command to print the genderClassification relation
+ - DUMP genderClassification
+2. We can see that the Number of splits is 1 and total length is 2148
+3. We can see the hadoopVersion, pig version , userid, started time 
+   and finished time and our code is executed successfully.
+4. Our output is listed
+
+
+
+
+
+
+
+
+Question 3. Execute Filter command with an Example.
+
+1. We have filtered our data set in such a way that only Gender - male 
+  is filtered
+   - filter_gender_M = FILTER genderClassification by gender=='M';
+2. We are Dumping our filtered values:
+   - DUMP filter_gender_M;
+3. We can see that 33 records are stored in our hdfs location.
+4. Finally, The gender with male or M class are are filtered out
+
+5.  We have filtered our data set in such a way that only Gender - Female
+  is filtered
+   - filter_gender_F = FILTER genderClassification by gender=='F';
+6.  We are Dumping our filtered values:
+   - DUMP filter_gender_F;
+7. We can see that 33 records are stored in our hdfs location.
+8. Finally, The gender with Female or F class are are filtered out
+
+
+Question 4. Execute Sort command with an Example.
+
+1. We are sorting the favorite color from fav_color and putting it
+  in sort_cort.
+   - sort_color = ORDER genderClassification BY fav_color ASC;
+
+2. After that we are Dumping the result.
+	-DUMP sort_color;
+
+3. We can see our fav_color column is sorted in AScending order.
+   Started from
+	Cool
+	Favorite Color
+	Neutral
+	Warm
+ 	
+
+
+Question 5. Execute Order command with an Example.
+
+1. We are ordering our fav_beverage column in Descending order.
+ - order_by_beverage = ORDER genderClassification BY fav_beverage DESC;
+
+2. Dumping the fav_beverage .
+  - DUMP order_by_beverage;
+
+3. We can see our fav_beverage is in descending order.
+ 	Wine
+	Whiskey
+	Vodka
+	Other
+	Favorite beverage
+	Doesn't drink
+	Beer
+
+
+
+Question 6. Execute Group command with an Example.
+
+1. We are grouping our data based on favorite music genre.
+  - group_by_music_genre = GROUP genderClassification BY 
+    fav_music_genre;
+
+2. After that we are dumping our results.
+3. We can see that total 8 records are written.
+4. We can see Pop genre at first.
+5. After that we have Rock genre and similarly Electronic and favorite music genre
+
+
+Question 7. Execute Combine command with an Example.
+
+The UNION operator of Pig Latin is used to merge the content 
+ of two relations.
+
+1. For this example i have created two datasets st_data1.txt and 
+   st_data2.txt in local system.
+2. I have copied st_data1.txt and st_data2.txt in hdfs from local
+   - hdfs dfs -put st_data1.txt /TestData/st_data1.txt
+   - hdfs dfs -put st_data2.txt /TestData/st_data2.txt
+3. After that i have give read, write , and execute permission to
+   those files in hdfs
+4. We can see we have permissions.
+
+
+Question 7. Execute Combine command with an Example.
+
+1. We have loaded st_data1.txt and st_data2.txt in st1 and st2 relation 
+   in pig
+   - st1 = LOAD '/TestData/st_data1.txt' USING PigStorage(',')
+	as (id:int, firstname:chararray, lastname:chararray, 
+          phone:chararray, city:chararray);
+   - st2 = LOAD '/TestData/st_data2.txt' USING PigStorage(',')
+	as (id:int, firstname:chararray, lastname:chararray, 
+          phone:chararray, city:chararray);
+2. Let us now merge the contents of these two relations using 
+   the UNION operator as shown below.
+3. Dumping values of st1 
+     DUMP st1;
+4. Dumping st2 values
+    - DUMP st2;
+
+5. We are combining our but st1 and st2 file into single st file
+  - UNION st1, st2;
+  - DUMP st; 
+6. We can see all our data are combined together in a single file
+
+9. Execute Inner Join command with an Example.
+
+1. for this example , i have created two text file customer.txt
+and order.txt file which both has id column in common.
+2. I have copied customer.txt and order.txt from local to hdfs
+ - hdfs dfs -put customer.txt /TestData/customer.txt
+ - hdfs dfs -put order.txt /TestData/orderr.txt
+3. After that i gave gave all permission to both files in hdfs
+  - dfs dfs -chmod 777 /TestData/customer.txt
+  - dfs dfs -chmod 777 /TestData/order.txt
+4. In the Pig shell, We are loading both order.txt and customer.txt
+
+  - orders = LOAD '/TestData/order.txt' USING PigStorage(',')   
+    as (orderid:int, date: chararray, custID:int, amount: int);
+   - customers = LOAD '/TestData/customer.txt' USING PigStorage(',')   
+    as (id:int, name:chararray, age:int, address:chararray, salary:int);
+
+5. Ater that, we are using, Inner Join to join both our relation
+   which will only joing the id with same number.
+
+  - Cust_Order= JOIN customers by id, orders by custID;
+
+6. And We dump the data
+7. We can see clearly that only same id from both relations are printed.
+
+
+Question 10. Execute Left Outer Join command with an Example.
+
+1. we will be using same customer and order relations for this example.
+
+2. We will use the following code for left outer join
+   - OuterJoin_Left= JOIN customers by id LEFT OUTER, 
+      orders by custID;
+3. After that we are dumping the results.
+4. We can clearly see the output, where the respected id for orders are
+joined in left side.
+
+
+Question 11. Execute Right outer join command with an Example.
+
+1. We will use the following code to join Right Outer Join
+
+   - OuterJoin_Right= JOIN customers by id RIGHT OUTER, 
+     orders by custID;
+2. After that we are dumping the results
+
+
+
+Question 12. Execute Full Join command with an Example.
+
+
+1. We will use the following code to join Right Outer Join
+
+   - FullOuterJoin= JOIN customers by id FULL OUTER, 
+     orders by custID;
+2. After that we are dumping the results
+     -DUMP FullOuterJoin
+
+
+
+Question 13. Execute CoGroup command with an Example.
+
+1. We are cogrouping our data with customer id from customers and 
+   orders relations.
+  - cogroup_data = COGROUP customers by id, orders by custID;
+2. After that we dumped the data
+   -  DUMP cogroup_data
+
+
+Question 14. Execute Flatten command with an Example
+
+1. we are using pig -x local to access file directly from our 
+   local system.
+
+2. We are using data from pig_inputs join_A and join_B
+	- A = load '/home/hadoop/work/pig_inputs/join_A
+	- B = load '/home/hadoop/work/pig_inputs/join_B
+3. We are making cogroup by joining first column from A 
+    and second column from B
+	- C = COGROUP A BY $0 INNER, B BY $1
+	- D = FOREACH C GENERATE FLATTER(A), B.$0
+
+Question 15. Execute ToBag command with an Example.
+
+For this example,we are using pig default mode
+
+1. We are using customer.txt data
+ - customers = LOAD '/TestData/customer.txt' USING PigStorage(',')
+>>    as (id:int, name:chararray, age:int, address:chararray,
+      salary:int);
+2. WE are using TOBAG() function to convert our expression to 
+   individual  tuples.
+    -tobag = FOREACH customers GENERATE TOBAG (id,name,age,address,
+      salary);
+
+2. By Dumping data, we get following result
+	-DUMP tobag;	-
+
+
+
+Question 16. Execute ToTuple command with an Example.
+
+1. The TOTUPLE function is used to convert expression to data type tuple
+2. we are using the same customer relations for this example
+3. cmd for using tuple
+ - totuple = FOREACH customers GENERATE TOTUPLE (id,name,age,address,
+   salary);
+
+4. After that we are dumping the result
+
+   - DUMP totuple;
+
+
+Question 17. Execute ToMap command with an Example.
+
+
+1. The TOMAP() function of Pig Latin is used to convert the
+  key-value pairs into a Map.
+2. We are using same customer relation
+3. Let us now take the name and address of each record as 
+   key-value pairs and convert them into map as shown below.
+	-tomap = FOREACH customers GENERATE TOMAP(name, address);
+
+4. Ater that, we are dumping the result
+	-DUMP tomap;
+
+
+
+
+
+
+Question 18. Execute Store command with an Example.
+
+1. We are going to store tomap relations in our hdfs location 
+ USING store cmd
+ - STORE tomap INTO '/TestData/output/tomap' USING PigStorage(',');
+
+2. We can see it is successfully stored
+
+
+Question 19. Execute PigStorage command with an Example.
+
+1. We are using customer.txt data . Using pigstorage(',') we used ',' 
+delimiter to delimitted our data.
+ - customers = LOAD '/TestData/customer.txt' USING PigStorage(',')
+>>    as (id:int, name:chararray, age:int, address:chararray, 
+    salary:int);
+
+2. In 2nd step, we are storing the data in /TestData/output/pigstorage
+ but we have used '-' delimiter .
+ - STORE customers INTO '/TestData/Output/pigstorage' USING 
+    PigStorage('-');
+3. Our data is successfully stored
+4. This is our output data
+
+Question 20. Execute Stream command with an Example.
+
+1. We are using customers data in this example
+2. We are only printing the name column.
+   -stream_data = STREAM customers THROUGH `cut -f 2`;
+3. After that we are dumping the result to see only name column
+    - DUMP stream_data;
+4. We are now only printing the address columns
+  -stream_data = STREAM customers THROUGH `cut -f 4`;
+5. After that we are dumping the result
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
