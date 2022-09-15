@@ -1,0 +1,31 @@
+package online.bibek.training
+
+import org.apache.spark.SparkConf
+import org.apache.spark.SparkContext
+
+object ReportGenerator {
+  
+  def main(args: Array[String]) {
+    val conf = (new SparkConf)
+      .setAppName("Sales Report Generator")
+
+      val sc = new SparkContext(conf)
+    
+    val rdd = sc.textFile("/user/hadoop/apps/spark/SalesJan2009.csv")
+    
+    val pairRdd = rdd.map(line => {
+      val elements = line.split(",")
+      (elements(2).trim, elements(1).trim.toInt)
+    })
+    
+    val aggRdd = pairRdd.reduceByKey((x, y) => x + y)
+    
+   // aggRdd.foreach(element => println(element._1 + " = " + element._2))
+    
+    for (element <- aggRdd.collect()) {
+      println(element._1 + " = " + element._2)
+    }
+  } 
+  
+  
+}
