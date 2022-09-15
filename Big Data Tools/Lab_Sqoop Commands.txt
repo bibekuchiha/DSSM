@@ -1,0 +1,11 @@
+Execute below Sqoop Commands and post the scrennshots with one example each.
+1. sqoop list-databases
+2. sqoop list-tables
+3. sqoop import-all-tables
+4. sqoop import
+5. sqoop --options-file
+6. sqoop eval
+7. sqoop export
+8. sqoop job
+9. sqoop codegen
+10. sqoop create-hive-table
